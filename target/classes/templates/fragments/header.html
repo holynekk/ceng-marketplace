@@ -1,0 +1,29 @@
+<div th:fragment="header" class="container-fluid border-bottom">
+    <div class="container-fluid">
+        <div class="row gy-3 align-items-center">
+            <div class="col-lg-2 col-sm-4 col-4">
+                <h1>ceng-marketplace</h1>
+            </div>
+            <div class="col-lg-5 col-md-12 col-12">
+                <div class="float-end">
+                    <a class="btn btn-sm btn-outline-secondary" sec:authorize="!isAuthenticated()" th:href="@{/users/login}">Log In</a>
+                    <a class="btn btn-sm btn-outline-primary" sec:authorize="!isAuthenticated()" th:href="@{/users/signup}">Sign Up</a>
+                    <form th:action="@{/logout}" method="POST">
+                        <input type="submit" sec:authorize="isAuthenticated()"  value="Log out"/>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row gy-3 align-items-center">
+            <div class="col-lg-2 col-sm-4 col-4">
+                <a href="/" class="navbar-brand" > Home </a>
+                <a href="/users/profile" class="navbar-brand" sec:authorize="isAuthenticated()" > Profile </a>
+                <a href="/admin/users" class="navbar-brand" sec:authorize="hasRole('ADMIN')" > Admin Page </a>
+
+            </div>
+        </div>
+    </div>
+</div>

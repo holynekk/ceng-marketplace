@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: cengMarketplace
+  config:
+    import: optional:file:.env[.properties]
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+
+server:
+  error:
+    whitelabel:
+      enabled: false
+    path: /error

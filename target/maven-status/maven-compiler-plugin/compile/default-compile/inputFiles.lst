@@ -1,0 +1,11 @@
+/home/holynekk/Desktop/ceng-marketplace/src/main/java/com/holynekk/cengMarketplace/service/UserService.java
+/home/holynekk/Desktop/ceng-marketplace/src/main/java/com/holynekk/cengMarketplace/entity/UserRole.java
+/home/holynekk/Desktop/ceng-marketplace/src/main/java/com/holynekk/cengMarketplace/controller/CustomErrorController.java
+/home/holynekk/Desktop/ceng-marketplace/src/main/java/com/holynekk/cengMarketplace/CengMarketplaceApplication.java
+/home/holynekk/Desktop/ceng-marketplace/src/main/java/com/holynekk/cengMarketplace/entity/User.java
+/home/holynekk/Desktop/ceng-marketplace/src/main/java/com/holynekk/cengMarketplace/service/CustomUserDetailsService.java
+/home/holynekk/Desktop/ceng-marketplace/src/main/java/com/holynekk/cengMarketplace/controller/AdminController.java
+/home/holynekk/Desktop/ceng-marketplace/src/main/java/com/holynekk/cengMarketplace/config/SecurityConfig.java
+/home/holynekk/Desktop/ceng-marketplace/src/main/java/com/holynekk/cengMarketplace/controller/UserController.java
+/home/holynekk/Desktop/ceng-marketplace/src/main/java/com/holynekk/cengMarketplace/repository/UserRepository.java
+/home/holynekk/Desktop/ceng-marketplace/src/main/java/com/holynekk/cengMarketplace/controller/HomeController.java
