@@ -7,7 +7,13 @@
 <div id="app">
     <div th:replace="fragments/header :: header"></div>
     <div class="container">
-        <h1>Profile Section!</h1>
+        <h1>User Management!</h1>
+        <table>
+            <tr th:each="count,iterator: ${users}">
+                <td th:text="${count.email}" />
+            </tr>
+        </table>
+
     </div>
 
 </div>

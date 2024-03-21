@@ -6,8 +6,12 @@
             </div>
             <div class="col-lg-5 col-md-12 col-12">
                 <div class="float-end">
-                    <a class="btn btn-sm btn-outline-secondary" sec:authorize="!isAuthenticated()" th:href="@{/oauth2/authorization/auth0}">Login</a>
-                    <a class="btn btn-sm btn-outline-secondary btn-danger text-white" sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
+                    <a class="btn btn-sm btn-outline-secondary" sec:authorize="!isAuthenticated()" th:href="@{/users/login}">Log In</a>
+                    <a class="btn btn-sm btn-outline-primary" sec:authorize="!isAuthenticated()" th:href="@{/users/signup}">Sign Up</a>
+                    <form th:action="@{/logout}" method="POST">
+                        <input type="submit" sec:authorize="isAuthenticated()"  value="Log out"/>
+                    </form>
+
                 </div>
             </div>
         </div>
@@ -16,7 +20,9 @@
         <div class="row gy-3 align-items-center">
             <div class="col-lg-2 col-sm-4 col-4">
                 <a href="/" class="navbar-brand" > Home </a>
-                <a href="/profile" class="navbar-brand" > Profile </a>
+                <a href="/users/profile" class="navbar-brand" sec:authorize="isAuthenticated()" > Profile </a>
+                <a href="/admin/users" class="navbar-brand" sec:authorize="hasRole('ADMIN')" > Admin Page </a>
+
             </div>
         </div>
     </div>

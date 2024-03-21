@@ -1,0 +1,24 @@
+<!doctype html>
+<html
+        lang="en"
+        xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/head :: head"></head>
+    <body>
+        <div id="app">
+            <div th:replace="fragments/header :: header"></div>
+            <div class="container">
+                <div th:if="${param.success}">
+                    You successfully registered. Please log in!
+                </div>
+                <div th:if="${param.error}">
+                    Credentials are wrong. Please try again!
+                </div>
+                <form th:action="@{/users/login}" method="POST">
+                    <input name="username" type="text" placeholder="Email"/>
+                    <input name="password" type="password" placeholder="Password"/>
+                    <input type="submit" value="Log In"/>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
