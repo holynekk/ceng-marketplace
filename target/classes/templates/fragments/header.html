@@ -1,29 +1,50 @@
-<div th:fragment="header" class="container-fluid border-bottom">
-    <div class="container-fluid">
-        <div class="row gy-3 align-items-center">
-            <div class="col-lg-2 col-sm-4 col-4">
-                <h1>ceng-marketplace</h1>
-            </div>
-            <div class="col-lg-5 col-md-12 col-12">
-                <div class="float-end">
-                    <a class="btn btn-sm btn-outline-secondary" sec:authorize="!isAuthenticated()" th:href="@{/users/login}">Log In</a>
-                    <a class="btn btn-sm btn-outline-primary" sec:authorize="!isAuthenticated()" th:href="@{/users/signup}">Sign Up</a>
-                    <form th:action="@{/logout}" method="POST">
-                        <input type="submit" sec:authorize="isAuthenticated()"  value="Log out"/>
-                    </form>
-
+<div class="header-wrapper" th:fragment="header">
+    <header class="header--box-shadow" >
+        <nav class="primary-nav-wrapper">
+            <div class="container">
+                <div class="primary-nav">
+                    <a class="main-logo" href="/">
+                        <h1>ceng-marketplace</h1>
+                    </a>
+                    <div>
+                        <a class="btn btn-sm btn-outline-secondary" sec:authorize="!isAuthenticated()" th:href="@{/users/login}">Log In</a>
+                        <a class="btn btn-sm btn-outline-primary" sec:authorize="!isAuthenticated()" th:href="@{/users/signup}">Sign Up</a>
+                        <form th:action="@{/logout}" method="POST">
+                            <input class="btn btn-sm btn-danger" type="submit" sec:authorize="isAuthenticated()" value="Log out"/>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row gy-3 align-items-center">
-            <div class="col-lg-2 col-sm-4 col-4">
-                <a href="/" class="navbar-brand" > Home </a>
-                <a href="/users/profile" class="navbar-brand" sec:authorize="isAuthenticated()" > Profile </a>
-                <a href="/admin/users" class="navbar-brand" sec:authorize="hasRole('ADMIN')" > Admin Page </a>
-
+        </nav>
+        <nav class="secondary-nav-wrapper">
+            <div class="container">
+                <div class="secondary-nav">
+                    <div class="menu-init" id="navigation2">
+                        <button class="btn btn--icon toggle-button toggle-button--white fas fa-cog"
+                                type="button"></button>
+                        <div class="ah-lg-mode">
+                            <span class="ah-close">✕ Close</span>
+                            <ul class="ah-list ah-list--design2 ah-list--link-color-white">
+                                <li>
+                                    <a href="/">Home</a>
+                                </li>
+                                <li class="has-dropdown">
+                                    <a href="/products">Products<i class="fas fa-angle-down u-s-m-l-6"></i></a>
+                                    <span class="js-menu-toggle"></span>
+                                    <ul style="width:170px">
+                                        <li th:each="item : ${rootCategories}" class="">
+                                            <a th:href="'/products?categoryId=' + ${item.id}" th:text="${item.name}"></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="has-dropdown">
+                                    <a href="/contact">Contact</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+        </nav>
+    </header>
 </div>

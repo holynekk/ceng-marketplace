@@ -5,7 +5,7 @@ spring:
     import: optional:file:.env[.properties]
   data:
     mongodb:
-      uri: mongodb+srv://holynekk:vRQDi2YynnEXo7dd@cluster0.4lqjrbr.mongodb.net/cengMarketplace?retryWrites=true&w=majority&appName=Cluster0
+      uri: ${MONGODB_URI}
 
 server:
   error:
