@@ -29,62 +29,76 @@
 }
 
 .ah-list {
-  margin: 0;
-  padding: 0; }
-  .ah-list li {
-    list-style: none; }
-  .ah-list ul {
     margin: 0;
-    padding: 0; }
+    padding: 0;
+}
+.ah-list li {
+    list-style: none;
+}
+.ah-list ul {
+    margin: 0;
+    padding: 0;
+}
 
 .ah-list--design1 > li {
-  display: inline-block; }
-  .ah-list--design1 > li > a {
+    display: inline-block;
+}
+.ah-list--design1 > li > a {
     display: inline-block;
     font-size: 16px;
-    padding: 28px 18px; }
+    padding: 28px 18px;
+}
 
 .ah-list--link-color-secondary > li > a {
-  color: #333333; }
+    color: #333333;
+}
 
 .ah-list--link-color-white > li > a {
-  color: #000000; }
+    color: #000000;
+}
 
 .ah-list--design2 > li {
-  display: inline-block; }
-  .ah-list--design2 > li > a {
+    display: inline-block;
+}
+.ah-list--design2 > li > a {
     font-weight: 700;
     font-size: 12px;
     display: inline-block;
-    padding: 31px 14px; }
+    padding: 31px 14px;
+}
 
 .has-dropdown > ul .has-dropdown {
-  position: relative; }
+    position: relative;
+}
 
 .has-dropdown > ul {
-  background-color: #ffffff;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.13);
-  position: absolute;
-  text-align: left;
-  padding: 20px 0 20px;
-  z-index: 999;
-  white-space: nowrap;
-  transition: all 0.3s ease;
-  top: 120%;
-  opacity: 0;
-  visibility: hidden; }
-  .has-dropdown > ul > li > a {
+    background-color: #ffffff;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.13);
+    position: absolute;
+    text-align: left;
+    padding: 20px 0 20px;
+    z-index: 999;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+    top: 120%;
+    opacity: 0;
+    visibility: hidden;
+}
+.has-dropdown > ul > li > a {
     display: block;
     padding: 8px 20px;
     color: #333333;
     font-size: 12px;
-    font-weight: 600; }
+    font-weight: 600;
+}
 
 .has-dropdown--ul-left-100 > ul {
-  left: 100%; }
+    left: 100%;
+}
 
 .has-dropdown--ul-right-100 > ul {
-  right: 100%; }
+    right: 100%;
+}
 
 @media (max-width: 1024px) {
   .menu-init .fa-angle-down:before {
@@ -205,23 +219,18 @@
      content: "\F105"; } }
 
 .btn--icon {
-  border: none;
-  background-color: transparent;
-  padding: 0; }
+    border: none;
+    background-color: transparent;
+    padding: 0;
+}
 
 .has-dropdown--ul-left-100 > ul {
-  left: 100%; }
+    left: 100%;
+}
 
 .has-dropdown--ul-right-100 > ul {
-  right: 100%; }
-
-
-
-
-
-
-
-
+    right: 100%;
+}
 
 .secondary-nav {
     display: -ms-flexbox;
@@ -236,31 +245,6 @@
     -ms-flex-align: center;
     align-items: center;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .section__content {
     position: relative;

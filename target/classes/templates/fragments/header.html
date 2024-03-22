@@ -29,16 +29,13 @@
                                     <a href="/">Home</a>
                                 </li>
                                 <li class="has-dropdown">
-                                    <a href="/products">Products<i class="fas fa-angle-down u-s-m-l-6"></i></a>
+                                    <a href="/products">Categories<i class="fas fa-angle-down u-s-m-l-6"></i></a>
                                     <span class="js-menu-toggle"></span>
                                     <ul style="width:170px">
-                                        <li th:each="item : ${rootCategories}" class="">
-                                            <a th:href="'/products?categoryId=' + ${item.id}" th:text="${item.name}"></a>
+                                        <li th:each="category : ${categories}" class="">
+                                            <a th:href="'/products?categoryName=' + ${category.name}" th:text="${category.name}"></a>
                                         </li>
                                     </ul>
-                                </li>
-                                <li class="has-dropdown">
-                                    <a href="/contact">Contact</a>
                                 </li>
                             </ul>
                         </div>
