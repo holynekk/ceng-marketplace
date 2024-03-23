@@ -1,4 +1,58 @@
 {% extends "base.html" %}
 {% block app %}
-<h1>Home section</h1>
+<div class="section__content">
+    <div class="container">
+        {% if number_of_products > 0 %}
+        <div class="row" >
+            {% for product in products %}
+            <div class="col-lg-3 col-md-4 col-sm-6 u-s-m-b-30">
+                <div class="product-r u-h-100">
+                    <div class="product-r__container">
+                        <a class="aspect aspect--bg-grey aspect--square u-d-block" href="/product/{{ product.id }}">
+                            <img class="aspect__img"
+                                 src="{{ product.imageLink }}"
+                                 alt="product placeholder"
+                            >
+                        </a>
+                        <div class="product-r__action-wrap">
+                            <ul class="product-r__action-list">
+                                <li>
+                                    <a href="/product/{{ product.id }}">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="product-r__info-wrap">
+                    <span class="product-r__category">
+                        <a href="/product/{{ product.id }}">{{ product.category }}</a>
+                    </span>
+                        <div class="product-r__n-p-wrap">
+                        <span class="product-r__name">
+                            <a href="/product/{{ product.id }}">{{ product.title }}</a>
+                        </span>
+                            <span class="product-r__price">
+<!--                                        <del th:if="${product.sale}" th:text="'$' + ${product.price}" style="color: lightgray"></del>-->
+<!--                                        <span th:text="'$' + ${product.sale ? product.salePrice : product.price}"></span>-->
+                                <span>{{ product.price }}</span>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if num_of_products < 1 %}
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-warning" role="alert">
+                    There are no recent products!
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

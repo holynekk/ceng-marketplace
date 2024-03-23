@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+from bson.objectid import ObjectId
 from api import mongodb
 
 
@@ -15,10 +16,27 @@ def index(request):
     categories = []
     for product in products_cursor:
         products.append(product)
+        product["id"] = product["_id"]
     for category in categories_cursor:
         categories.append(category)
+    number_of_products = len(products)
+    return render(request, "index.html",
+                  {"categories": categories, "products": products, "number_of_products": number_of_products,
+                   "user": request.user})
 
-    return render(request, "index.html", {"categories": categories, "user": request.user})
+
+def product_view(request, product_id):
+    if request.method == 'GET':
+        products_collection = mongodb["products"]
+        categories_collection = mongodb["categories"]
+        product = products_collection.find_one({"_id": ObjectId(product_id)})
+        categories_cursor = categories_collection.find().sort("name")
+
+        categories = []
+        for category in categories_cursor:
+            categories.append(category)
+
+        return render(request, "product-detail.html", {"categories": categories, "product": product, "user": request.user})
 
 
 def login_view(request):
@@ -39,7 +57,6 @@ def signup(request):
         return render(request, "signup.html")
     elif request.method == 'POST':
         form_data = request.POST
-        print(form_data)
         user = User.objects.create_user(form_data["email"], form_data["email"], form_data["password"])
         user.first_name = form_data["firstName"]
         user.last_name = form_data["lastName"]
