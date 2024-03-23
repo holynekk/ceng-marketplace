@@ -28,6 +28,7 @@
                                     {% if user.is_staff %}
                                     <a class="btn btn-sm btn-warning" href="/admin-page">Admin Page</a>
                                     {% endif %}
+                                    <a class="btn btn-sm btn-primary" href="/add">Add Product</a>
                                     <a class="btn btn-sm btn-danger" href="/logout">Log out</a>
                                     {% endif %}
                                 </div>
@@ -52,7 +53,7 @@
                                                 <ul style="width:170px">
                                                     {% for category in categories %}
                                                     <li>
-                                                        <a href="/products?categoryName=">{{ category.name }}</a>
+                                                        <a href="/category/{{ category.name }}">{{ category.name }}</a>
                                                     </li>
                                                     {% endfor %}
                                                 </ul>

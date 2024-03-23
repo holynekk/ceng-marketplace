@@ -5,13 +5,12 @@ from bson.objectid import ObjectId
 from api import mongodb
 
 
-def index(request):
+def index(request, category_name=None):
     products_collection = mongodb["products"]
     categories_collection = mongodb["categories"]
-
-    products_cursor = products_collection.find()
+    print(category_name)
+    products_cursor = products_collection.find({"category": category_name} if category_name is not None and category_name != "All" else None)
     categories_cursor = categories_collection.find().sort("name")
-
     products = []
     categories = []
     for product in products_cursor:
@@ -36,7 +35,8 @@ def product_view(request, product_id):
         for category in categories_cursor:
             categories.append(category)
 
-        return render(request, "product-detail.html", {"categories": categories, "product": product, "user": request.user})
+        return render(request, "product-detail.html",
+                      {"categories": categories, "product": product, "user": request.user})
 
 
 def login_view(request):
