@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block app %}
+<div class="app-content">
+    <div class="u-s-p-b-60">
+        <div class="section__content">
+            <div class="container">
+                <div class="row row--center">
+                    <div class="col-lg-6 col-md-8 u-s-m-b-30">
+                        <div class="l-f-o">
+                            <div class="l-f-o__pad-box">
+                                <a class="btn btn-sm btn-outline-secondary" href="/product/add/category">Back</a>
+                                <h1 class="gl-h1">ADD ITEM - ({{ category_name }})</h1>
+
+                                <span class="gl-text u-s-m-b-30">
+                                    You can use this form to add a new product with predefined category
+                                    fields and dynamic fields that you can define specific to your product.
+                                    Fields with * are required fields that you have to fill.
+                                </span>
+                                <form class="l-f-o__form" action="/product/add/" method="POST">
+                                    {% csrf_token %}
+                                    <div class="u-s-m-b-30">
+                                        <label class="gl-label" for="p-title">Title *</label>
+                                        <input class="input-text input-text--primary-style" type="text" name="p-title"
+                                               id="p-title" placeholder="Enter a Title" required/>
+                                    </div>
+                                    <div class="u-s-m-b-30">
+                                        <label class="gl-label" for="p-description">Description *</label>
+                                        <input class="input-text input-text--primary-style" type="text" name="p-description"
+                                               id="p-description" placeholder="Enter a Description" required>
+                                    </div>
+                                    <div class="u-s-m-b-30">
+                                        <label class="gl-label" for="p-price">Price($) *</label>
+                                        <input class="input-text input-text--primary-style" type="number" name="p-price"
+                                               id="p-price" placeholder="Enter Price" required>
+                                    </div>
+                                    <div class="u-s-m-b-30">
+                                        <label class="gl-label" for="p-imageLink">Image Link *</label>
+                                        <input class="input-text input-text--primary-style" type="text" name="p-imageLink"
+                                               id="p-imageLink" placeholder="Enter an Image Link" required>
+                                    </div>
+                                    {% for key, val in category_fields.items %}
+                                    <div class="u-s-m-b-30">
+                                        <label class="gl-label" for="p-{{ key }}">{{ key }}</label>
+                                        {% if val == "number" or val == "text" %}
+                                        <input class="input-text input-text--primary-style" type="{{ val }}" name="p-{{ key }}"
+                                               id="p-{{ key }}" placeholder="Enter {{ key }}">
+                                        {% else %}
+                                        <input class="input-text input-text--primary-style" type="text" name="p-{{ key }}"
+                                               id="p-{{ key }}" placeholder="Enter {{ key }}">
+                                        {% endif %}
+                                    </div>
+                                    {% endfor %}
+                                    <div class="gl-inline">
+                                        <div class="u-s-m-b-30">
+                                            <button class="btn btn--e-transparent-brand-b-2" type="submit">
+                                                ADD ITEM
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="u-s-m-b-30">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

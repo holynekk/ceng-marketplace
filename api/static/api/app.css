@@ -127,7 +127,6 @@ iframe[src*="soundcloud"] {
     }
 }
 
-
 @media (min-width: 576px) {
     html.boxed header, html.boxed footer {
         margin-right: auto;
@@ -160,7 +159,6 @@ iframe[src*="soundcloud"] {
     }
 }
 
-/* App Content exclude Header & Footer */
 @media (min-width: 576px) {
     html.boxed .app-content {
         margin: 0 auto;
@@ -207,7 +205,6 @@ html.boxed .app-content .container {
     }
 }
 
-/* Footer with container Element */
 @media (max-width: 1024px) {
     html.boxed footer .container {
         padding-left: 20px;

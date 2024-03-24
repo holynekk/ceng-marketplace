@@ -8,4 +8,7 @@ urlpatterns = [
     re_path(r"^signup/$", views.signup, name='signup'),
     re_path(r"^logout/$", views.logout_view, name='logout'),
     re_path(r"^product/(?P<product_id>[a-z0-9]+)$", views.product_view, name='product_detail'),
+    re_path(r"^product/add/category$", views.select_category, name='select_category'),
+    re_path(r"^product/add/(?P<category_name>[a-zA-Z]+)", views.get_product_form, name='get_product_form'),
+    re_path(r"^product/add/", views.create_product, name='create_product'),
 ]

@@ -5,7 +5,7 @@
         {% if number_of_products > 0 %}
         <div class="row" >
             {% for product in products %}
-            <div class="col-lg-3 col-md-4 col-sm-6 u-s-m-b-30">
+            <div class="col-lg-3 col-md-4 col-sm-6 u-s-m-b-30" onclick="location.href='/product/{{ product.id }}';" style="cursor: pointer;">
                 <div class="product-r u-h-100">
                     <div class="product-r__container">
                         <a class="aspect aspect--bg-grey aspect--square u-d-block" href="/product/{{ product.id }}">

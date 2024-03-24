@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block app %}
+<div class="section__content">
+    <div class="container">
+        <div class="row" >
+            <h2 class="u-s-m-b-15">Pick a category!</h2>
+            {% for category in categories %}
+            <div class="col-lg-3 col-md-4 col-sm-6 u-s-m-b-30">
+                <div class="product-r u-h-100" onclick="location.href='/product/add/{{ category.name }}';" style="cursor: pointer;">
+                    <div class="product-r__info-wrap">
+                        <div class="product-r__n-p-wrap">
+                            <span class="product-r__name">
+                                <a href="/product/add/{{ category.name }}">{{ category.name }}</a>
+                            </span>
+                        </div>
+                        <span class="product-r__category">
+                            {{ category.description }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

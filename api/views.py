@@ -8,8 +8,8 @@ from api import mongodb
 def index(request, category_name=None):
     products_collection = mongodb["products"]
     categories_collection = mongodb["categories"]
-    print(category_name)
-    products_cursor = products_collection.find({"category": category_name} if category_name is not None and category_name != "All" else None)
+    products_cursor = products_collection.find(
+        {"category": category_name} if category_name is not None and category_name != "All" else None)
     categories_cursor = categories_collection.find().sort("name")
     products = []
     categories = []
@@ -20,8 +20,7 @@ def index(request, category_name=None):
         categories.append(category)
     number_of_products = len(products)
     return render(request, "index.html",
-                  {"categories": categories, "products": products, "number_of_products": number_of_products,
-                   "user": request.user})
+                  {"categories": categories, "products": products, "number_of_products": number_of_products})
 
 
 def product_view(request, product_id):
@@ -35,8 +34,14 @@ def product_view(request, product_id):
         for category in categories_cursor:
             categories.append(category)
 
+        dynamic_fields = product
+        dynamic_fields.pop("_id", None)
+        dynamic_fields.pop("title", None)
+        dynamic_fields.pop("description", None)
+        dynamic_fields.pop("imageLink", None)
+
         return render(request, "product-detail.html",
-                      {"categories": categories, "product": product, "user": request.user})
+                      {"categories": categories, "product": product, "dynamic_fields": dynamic_fields})
 
 
 def login_view(request):
@@ -68,3 +73,44 @@ def logout_view(request):
     if request.method == 'GET':
         logout(request)
         return redirect('/')
+
+
+def select_category(request):
+    if request.method == 'GET':
+        categories_collection = mongodb["categories"]
+        categories_cursor = categories_collection.find().sort("name")
+        categories = []
+        for category in categories_cursor:
+            if category["name"] != "All":
+                categories.append(category)
+        return render(request, "select-category.html", {"categories": categories})
+
+
+def get_product_form(request, category_name):
+    if request.method == 'GET':
+        categories_collection = mongodb["categories"]
+        category1 = categories_collection.find_one({"name": category_name})
+        category1.pop("_id", None)
+        category1.pop("name", None)
+        category1.pop("description", None)
+        categories_cursor = categories_collection.find().sort("name")
+        categories = []
+        for category in categories_cursor:
+            categories.append(category)
+        return render(request, "product-form.html",
+                      {"categories": categories, "category_name": category_name, "category_fields": category1})
+
+
+def create_product(request):
+    if request.method == 'POST':
+        products_collection = mongodb["products"]
+        product = {}
+        form_data = request.POST
+        form_data = form_data.dict()
+        form_data.pop("csrfmiddlewaretoken", None)
+        for k, v in form_data.items():
+            v = v.strip(" ")
+            if v:
+                product[k[2:]] = v
+        products_collection.insert_one(product)
+        return redirect("/")
