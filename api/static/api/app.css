@@ -759,6 +759,62 @@ font-family: "Open Sans", -apple-system, system-ui, BlinkMacSystemFont, "Segoe U
     background-color: #d73925;
 }
 
+.gl-dob {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.gl-dob .select-box {
+    -ms-flex: 1;
+    flex: 1;
+    margin-right: 8px;
+}
+.gl-dob .select-box:last-child {
+    margin-right: 0;
+}
+
+.select-box {
+    display: block;
+    max-width: 100%;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 10px 8px 15px;
+    cursor: pointer;
+    line-height: 1.2;
+}
+.select-box--primary-style {
+    color: #333333;
+    border: 2px solid transparent;
+    background-color: #f1f1f1;
+}
+.select-box--transparent-b-2 {
+    color: #333333;
+    border: 1px solid transparent;
+    background-color: transparent;
+}
+.select-box:focus {
+    outline: 0;
+}
+.select-box::-ms-expand {
+    background-color: transparent;
+    border: 0;
+}
+
+.select-box:disabled {
+    background-color: #cecece;
+}
+
+.select-box--primary-style:focus::-ms-value {
+    color: #333333;
+    background-color: #f1f1f1;
+}
+
+.select-box--transparent-b-2:focus::-ms-value {
+    color: #333333;
+    background-color: #ffffff;
+}
+
 .btn--e-transparent-brand-b-2 {
     color: #ff4500;
     border: 2px solid #ff4500;
@@ -822,32 +878,6 @@ font-family: "Open Sans", -apple-system, system-ui, BlinkMacSystemFont, "Segoe U
 .input-text:disabled {
     background-color: #cecece;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .aspect {
     position: relative;

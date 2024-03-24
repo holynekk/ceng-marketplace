@@ -8,8 +8,11 @@
                     <div class="col-lg-6 col-md-8 u-s-m-b-30">
                         <div class="l-f-o">
                             <div class="l-f-o__pad-box">
-                                <a class="btn btn-sm btn-outline-secondary" href="/product/add/category">Back</a>
-                                <h1 class="gl-h1">ADD ITEM - ({{ category_name }})</h1>
+
+                                <h1 class="gl-h1">
+                                    <a class="btn btn-sm btn-outline-secondary" href="/product/add/category">Back</a>
+                                    ADD ITEM - ({{ category_name }})
+                                </h1>
 
                                 <span class="gl-text u-s-m-b-30">
                                     You can use this form to add a new product with predefined category
@@ -50,14 +53,23 @@
                                         {% endif %}
                                     </div>
                                     {% endfor %}
+                                    <label class="gl-label" id="dynamic-field-text">Dynamic Field</label>
+                                    <div class="container d-flex flex-row justify-content-center align-items-center">
+                                        <input class="input-text input-text--primary-style" type="text" id="dynamic-field-name" placeholder="Enter the Dynamic Field Name" />
+                                        <div class="gl-dob">
+                                            <select class="select-box select-box--primary-style" id="dynamic-field-type">
+                                                <option value="text" selected>TEXT</option>
+                                                <option value="number">NUMBER</option>
+                                            </select>
+                                        </div>
+                                        <a class="btn btn-secondary" style="font-size: 12px;" onclick="addDynamicRow()">Add Field</a>
+                                    </div>
                                     <div class="gl-inline">
                                         <div class="u-s-m-b-30">
-                                            <button class="btn btn--e-transparent-brand-b-2" type="submit">
+                                            <button class="btn btn--e-brand-b-2" type="submit">
                                                 ADD ITEM
                                             </button>
                                         </div>
-                                    </div>
-                                    <div class="u-s-m-b-30">
                                     </div>
                                 </form>
                             </div>
