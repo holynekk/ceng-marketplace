@@ -48,7 +48,7 @@
                                                 <a href="/">Home</a>
                                             </li>
                                             <li class="has-dropdown">
-                                                <a href="/products">Categories<i class="fas fa-angle-down u-s-m-l-6"></i></a>
+                                                <a href="/category/All">Categories<i class="fas fa-angle-down u-s-m-l-6"></i></a>
                                                 <span class="js-menu-toggle"></span>
                                                 <ul style="width:170px">
                                                     {% for category in categories %}
@@ -57,6 +57,9 @@
                                                     </li>
                                                     {% endfor %}
                                                 </ul>
+                                            </li>
+                                            <li>
+                                                <a href="/profile/{{ user.id }}">Profile</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -134,7 +137,7 @@
                         <div class="lower-footer__content">
                             <div class="lower-footer__copyright">
                                 <span>You can click </span>
-                                <a href="github.com/holynekk/ceng-marketplace">here</a>
+                                <a href="https://github.com/holynekk/ceng-marketplace">here</a>
                                 <span>to see the github repository. (It's private)</span>
                             </div>
                         </div>

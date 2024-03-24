@@ -2,6 +2,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from bson.objectid import ObjectId
+from datetime import datetime
+
+
 from api import mongodb
 
 
@@ -114,3 +117,39 @@ def create_product(request):
                 product[k[2:]] = v
         products_collection.insert_one(product)
         return redirect("/")
+
+
+def profile(request, user_id):
+    users_collection = mongodb["auth_user"]
+    if request.method == 'GET':
+        user_data = users_collection.find_one({"id": int(user_id)})
+        categories_collection = mongodb["categories"]
+        categories_cursor = categories_collection.find().sort("name")
+        categories = []
+        for category in categories_cursor:
+            categories.append(category)
+        return render(request, "profile.html",
+                      {"categories": categories, "user_data": user_data})
+
+
+def edit_profile(request, user_id):
+    users_collection = mongodb["auth_user"]
+    if request.method == 'GET':
+        user_data = users_collection.find_one({"id": int(user_id)})
+        categories_collection = mongodb["categories"]
+        categories_cursor = categories_collection.find().sort("name")
+        categories = []
+        for category in categories_cursor:
+            categories.append(category)
+        return render(request, "edit-profile.html",
+                      {"categories": categories, "user_data": user_data})
+
+
+def edit_profile_post(request):
+    users_collection = mongodb["auth_user"]
+    if request.method == 'POST':
+        form_data = request.POST
+        form_data = form_data.dict()
+        form_data.pop("csrfmiddlewaretoken", None)
+        aaaaa = users_collection.find_one_and_update({"id": request.user.id}, {"$set": form_data})
+        return redirect("/profile/" + str(request.user.id))

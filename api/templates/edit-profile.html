@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block app %}
+<div class="app-content">
+    <div class="u-s-p-b-60">
+        <div class="section__content">
+            <div class="container">
+                <div class="row row--center">
+                    <div class="col-lg-6 col-md-8 u-s-m-b-30">
+                        <div class="l-f-o">
+                            <div class="l-f-o__pad-box">
+                                <h1 class="gl-h1">UPDATE PROFILE INFORMATION</h1>
+                                <form class="l-f-o__form" action="/profile/edit/" method="POST">
+                                    {% csrf_token %}
+                                    <div class="gl-s-api">
+                                        <div class="u-s-m-b-30">
+                                            <label class="gl-label" for="reg-fname">FIRST NAME *</label>
+                                            <input class="input-text input-text--primary-style" type="text" name="first_name" value="{{ user.first_name }}"
+                                                   id="reg-fname" placeholder="First Name">
+                                        </div>
+                                        <div class="u-s-m-b-30">
+                                            <label class="gl-label" for="reg-lname">LAST NAME *</label>
+                                            <input class="input-text input-text--primary-style" type="text" name="last_name" value="{{ user.last_name }}"
+                                                   id="reg-lname" placeholder="Last Name">
+                                        </div>
+                                        <div class="u-s-m-b-15">
+                                            <button class="btn btn--e-transparent-brand-b-2" type="submit">
+                                                EDIT
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
