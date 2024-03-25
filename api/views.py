@@ -24,6 +24,8 @@ def index(request, category_key=None):
         if category["key"] == category_key:
             category_name = category["name"]
         categories.append(category)
+    if not category_name:
+        category_name = "All"
     number_of_products = len(products)
     return render(request, "index.html",
                   {"categories": categories, "products": products, "number_of_products": number_of_products,
@@ -72,19 +74,22 @@ def select_category(request):
         return render(request, "select-category.html", {"categories": categories})
 
 
-def product_creation(request, category_name):
+def product_creation(request, category_key="None"):
+    categories_collection = mongodb["categories"]
+    category1 = categories_collection.find_one({"key": category_key})
+    category_name = category1["name"]
     if request.method == 'GET':
-        categories_collection = mongodb["categories"]
-        category1 = categories_collection.find_one({"name": category_name})
         category1.pop("_id", None)
         category1.pop("name", None)
         category1.pop("description", None)
+        category1.pop("key", None)
         categories_cursor = categories_collection.find().sort("name")
         categories = []
         for category in categories_cursor:
             categories.append(category)
         return render(request, "product-form.html",
-                      {"categories": categories, "category_name": category_name, "category_fields": category1})
+                      {"categories": categories, "category_name": category_name, "category_key": category_key,
+                       "category_fields": category1})
     elif request.method == 'POST':
         products_collection = mongodb["products"]
         product = {}
@@ -96,11 +101,10 @@ def product_creation(request, category_name):
             if v:
                 product[k[2:]] = v
         product["owner_id"] = request.user.id
-        product["category"] = category_name
+        product["category"] = category_key
         product["created_at"] = datetime.now()
         product["updated_at"] = datetime.now()
         product["isActive"] = True if product.get("isActive", None) else False
-        print(product)
         products_collection.insert_one(product)
         return redirect("/")
 
@@ -126,12 +130,64 @@ def product_view(request, product_id):
             dynamic_fields.pop(k, None)
 
         user_data = users_collection.find_one({"id": product.get("owner_id", None)})
-        contact_data = {"Email": user_data["email"], "Full Name": user_data["first_name"] + user_data["last_name"], "Phone Number": user_data.get("phone_number", "-")}
-        print("--------------")
-        print(contact_data)
-
+        contact_data = {"Email": user_data["email"], "Full Name": user_data["first_name"] + user_data["last_name"],
+                        "Phone Number": user_data.get("phone_number", "-")}
+        product["id"] = product["_id"]
         return render(request, "product-detail.html",
-                      {"categories": categories, "product": product, "dynamic_fields": dynamic_fields, "contact_data": contact_data})
+                      {"categories": categories, "product": product, "dynamic_fields": dynamic_fields,
+                       "contact_data": contact_data})
+
+
+def edit_product(request, product_id):
+    products_collection = mongodb["products"]
+    if request.method == 'GET':
+        categories_collection = mongodb["categories"]
+        categories_cursor = categories_collection.find().sort("name")
+        categories = []
+        for category in categories_cursor:
+            categories.append(category)
+        product = products_collection.find_one({"_id": ObjectId(product_id)})
+        category = categories_collection.find_one({"key": product["category"]})
+        category_name = category["name"]
+        category.pop("_id", None)
+        category.pop("name", None)
+        category.pop("description", None)
+        category.pop("key", None)
+
+        extra_fields = {}
+        for k, v in category.items():
+            extra_fields[k] = {"type": v, "value": product.get(k, "")}
+
+        product_fields = copy.deepcopy(product)
+        entries_to_remove = (
+            "owner_id", "price", "category", "isActive", "updated_at", "created_at", "imageLink", "description",
+            "title", "key",
+            "id", "_id")
+        for k in entries_to_remove:
+            product_fields.pop(k, None)
+        for k, v in product_fields.items():
+            if k not in extra_fields:
+                extra_fields[k] = {"type": v, "value": product.get(k, "")}
+        product["id"] = product["_id"]
+        return render(request, "edit-product.html",
+                      {"categories": categories, "product": product, "category_name": category_name, "extra_fields": extra_fields})
+    elif request.method == 'POST':
+        form_data = request.POST.dict()
+        form_data.pop("csrfmiddlewaretoken", None)
+        products_collection.find_one_and_update({"_id": ObjectId(product_id)}, {"$unset": {"TYsdfPE2": ""}})
+        add_list = {"updated_at": datetime.now()}
+        remove_list = {}
+        for k, v in form_data.items():
+            key = k[2:]
+            if v != "":
+                add_list[key] = v
+            else:
+                remove_list[key] = v
+        products_collection.find_one_and_update({"_id": ObjectId(product_id)}, {"$set": add_list})
+        products_collection.find_one_and_update({"_id": ObjectId(product_id)}, {"$unset": remove_list})
+
+        return redirect("/product/edit/" + product_id)
+
 
 
 def profile(request, user_id):

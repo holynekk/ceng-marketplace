@@ -10,49 +10,49 @@
                             <div class="l-f-o__pad-box">
                                 <h1 class="gl-h1">
                                     <a class="btn btn-sm btn-outline-secondary" href="/product/add/category">Back</a>
-                                    ADD PRODUCT - ({{ category_name }})
+                                    EDIT PRODUCT - ({{ category_name }})
                                 </h1>
                                 <span class="gl-text u-s-m-b-30">
-                                    You can use this form to add a new product with predefined category
+                                    You can use this form to edit your product with predefined category
                                     fields and dynamic fields that you can define specific to your product.
                                     Fields with * are required fields that you have to fill.
                                 </span>
-                                <form class="l-f-o__form" action="/product/add/{{ category_key }}" method="POST">
+                                <form class="l-f-o__form" action="/product/edit/{{ product.id }}" method="POST">
                                     {% csrf_token %}
                                     <div class="u-s-m-b-30">
                                         <label class="gl-label" for="p-title">Title *</label>
                                         <input class="input-text input-text--primary-style" type="text" name="p-title"
-                                               id="p-title" placeholder="Enter a Title" required/>
+                                               id="p-title" placeholder="Enter a Title" value="{{ product.title }}" required/>
                                     </div>
                                     <div class="u-s-m-b-30">
                                         <label class="gl-label" for="p-description">Description *</label>
                                         <input class="input-text input-text--primary-style" type="text" name="p-description"
-                                               id="p-description" placeholder="Enter a Description" required>
+                                               id="p-description" placeholder="Enter a Description" value="{{ product.description }}" required>
                                     </div>
                                     <div class="u-s-m-b-30">
                                         <label class="gl-label" for="p-price">Price($) *</label>
                                         <input class="input-text input-text--primary-style" type="number" name="p-price"
-                                               id="p-price" placeholder="Enter Price" required>
+                                               id="p-price" placeholder="Enter Price" value="{{ product.price }}" required>
                                     </div>
                                     <div class="u-s-m-b-30">
                                         <label class="gl-label" for="p-imageLink">Image Link *</label>
                                         <input class="input-text input-text--primary-style" type="text" name="p-imageLink"
-                                               id="p-imageLink" placeholder="Enter an Image Link" required>
+                                               id="p-imageLink" placeholder="Enter an Image Link" value="{{ product.imageLink }}" required>
                                     </div>
                                     <div class="u-s-m-b-30">
                                         <label class="gl-label" for="p-isActive">Active * (If not selected, item will not be shown publicly.)</label>
                                         <input class="input-text--primary-style" type="checkbox" name="p-isActive" checked
-                                               id="p-isActive" placeholder="Enter an Image Link" value="asdasd" />
+                                               id="p-isActive" placeholder="Enter an Image Link" value="{{ product.isActive }}" />
                                     </div>
-                                    {% for key, val in category_fields.items %}
+                                    {% for key, val in extra_fields.items %}
                                     <div class="u-s-m-b-30">
                                         <label class="gl-label" for="p-{{ key }}">{{ key }}</label>
-                                        {% if val == "number" or val == "text" %}
-                                        <input class="input-text input-text--primary-style" type="{{ val }}" name="p-{{ key }}"
-                                               id="p-{{ key }}" placeholder="Enter {{ key }}">
+                                        {% if val.type == "number" or val.type == "text" %}
+                                        <input class="input-text input-text--primary-style" type="{{ val.type }}" name="p-{{ key }}"
+                                               id="p-{{ key }}" placeholder="Enter {{ key }}" value="{{ val.value }}">
                                         {% else %}
                                         <input class="input-text input-text--primary-style" type="text" name="p-{{ key }}"
-                                               id="p-{{ key }}" placeholder="Enter {{ key }}">
+                                               id="p-{{ key }}" placeholder="Enter {{ key }}" value="{{ val.value }}">
                                         {% endif %}
                                     </div>
                                     {% endfor %}
@@ -70,7 +70,7 @@
                                     <div class="gl-inline">
                                         <div class="u-s-m-b-30">
                                             <button class="btn btn--e-brand-b-2" type="submit">
-                                                ADD ITEM
+                                                EDIT PRODUCT
                                             </button>
                                         </div>
                                     </div>

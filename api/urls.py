@@ -1,17 +1,18 @@
-from django.urls import re_path
+from django.urls import path
 from api import views
 
 urlpatterns = [
-    re_path(r"^$", views.index, name="index"),
-    re_path(r"^category/(?P<category_key>[a-zA-Z]+)$", views.index, name="index"),
-    re_path(r"^login/$", views.login_view, name="login"),
-    re_path(r"^signup/$", views.signup, name='signup'),
-    re_path(r"^logout/$", views.logout_view, name='logout'),
-    re_path(r"^product/(?P<product_id>[a-z0-9]+)$", views.product_view, name='product_detail'),
-    re_path(r"^product/add/category$", views.select_category, name='select_category'),
-    re_path(r"^product/add/(?P<category_name>[a-zA-Z]+)$", views.product_creation, name='product_creation'),
-    re_path(r"^profile/(?P<user_id>[0-9]+)$", views.profile, name='profile'),
-    re_path(r"^profile/edit/(?P<user_id>[0-9]+)$", views.edit_profile, name='edit_profile'),
-    re_path(r"^admin-page/$", views.admin_page, name='admin_page'),
-    re_path(r"^delete-user/(?P<user_id>[0-9]+)$", views.delete_user, name='delete_user'),
+    path("", views.index, name="index"),
+    path("category/<str:category_key>", views.index, name="index"),
+    path("login/", views.login_view, name="login"),
+    path("signup/", views.signup, name='signup'),
+    path("logout/", views.logout_view, name='logout'),
+    path("product/<str:product_id>", views.product_view, name='product_detail'),
+    path("product/add/category", views.select_category, name='select_category'),
+    path("product/add/<str:category_key>", views.product_creation, name='product_creation'),
+    path("product/edit/<str:product_id>", views.edit_product, name='edit_product'),
+    path("profile/<int:user_id>", views.profile, name='profile'),
+    path("profile/edit/<int:user_id>", views.edit_profile, name='edit_profile'),
+    path("admin-page/", views.admin_page, name='admin_page'),
+    path("delete-user/<int:user_id>", views.delete_user, name='delete_user'),
 ]

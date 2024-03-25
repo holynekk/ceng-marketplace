@@ -2,6 +2,9 @@
 {% block app %}
 <div class="section__content">
     <div class="container">
+        <div class="u-s-m-b-15">
+            <h2>Category: {{ category_name }}</h2>
+        </div>
         {% if number_of_products > 0 %}
         <div class="row" >
             {% for product in products %}
