@@ -74,7 +74,10 @@
                     <div class="u-s-m-b-30">
                         <ul class="nav pd-tab__list">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#pd-desc">DESCRIPTION</a>
+                                <a id="pd-desc-tab" class="nav-link active" onclick="changeProductTab(this.id)" href="#pd-desc">DESCRIPTION</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="pd-contact-tab" class="nav-link" onclick="changeProductTab(this.id)" href="#pd-contact">CONTACT</a>
                             </li>
                         </ul>
                     </div>
@@ -106,6 +109,41 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="tab-pane fade" id="pd-contact">
+                            {% if not user.is_authenticated %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="alert alert-warning" role="alert">
+                                        You have to log in first to view contact information!
+                                    </div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="pd-tab__desc">
+                                <div class="u-s-m-b-15">
+                                    <h4>CONTACT INFORMATION</h4>
+                                </div>
+                                <div class="u-s-m-b-15">
+                                    <div class="pd-table gl-scroll">
+                                        <table>
+                                            <tbody>
+                                            <tr>
+                                                <td>Category</td>
+                                                <td>{{ product.category }}</td>
+                                            </tr>
+                                            {% for k, v in dynamic_fields.items %}
+                                            <tr>
+                                                <td>{{ k }}</td>
+                                                <td>{{ v }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

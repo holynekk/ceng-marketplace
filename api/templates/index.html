@@ -41,12 +41,15 @@
             </div>
             {% endfor %}
         </div>
-        {% endif %}
-        {% if num_of_products < 1 %}
+        {% else %}
         <div class="row">
             <div class="col-12">
                 <div class="alert alert-warning" role="alert">
+                    {% if category_name %}
+                    There are no recent products for {{ category_name }} category!
+                    {% else %}
                     There are no recent products!
+                    {% endif %}
                 </div>
             </div>
         </div>

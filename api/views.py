@@ -23,7 +23,7 @@ def index(request, category_name=None):
         categories.append(category)
     number_of_products = len(products)
     return render(request, "index.html",
-                  {"categories": categories, "products": products, "number_of_products": number_of_products})
+                  {"categories": categories, "products": products, "number_of_products": number_of_products, "category_name": category_name})
 
 
 def login_view(request):
@@ -157,3 +157,31 @@ def edit_profile_post(request):
         form_data.pop("csrfmiddlewaretoken", None)
         users_collection.find_one_and_update({"id": request.user.id}, {"$set": form_data})
         return redirect("/profile/" + str(request.user.id))
+
+
+def admin_page(request, user_id=None):
+    users_collection = mongodb["auth_user"]
+    if request.method == 'GET':
+        user_data = []
+        user_data_cursor = users_collection.find()
+        for usr in user_data_cursor:
+            data = {"id": usr["id"], "email": usr["email"], "full_name": usr["first_name"] + usr["last_name"],
+                    "date_joined": usr["date_joined"], "last_login": usr["last_login"]}
+            user_data.append(data)
+        categories_collection = mongodb["categories"]
+        categories_cursor = categories_collection.find().sort("name")
+        categories = []
+        for category in categories_cursor:
+            categories.append(category)
+        return render(request, "admin-page.html",
+                      {"categories": categories, "user_data": user_data})
+
+def delete_user(request, user_id):
+    users_collection = mongodb["auth_user"]
+    products_collection = mongodb["products"]
+    if request.method == 'POST':
+        user_query = {"id": int(user_id)}
+        product_query = {"owner_id": int(user_id)}
+        users_collection.delete_one(user_query)
+        products_collection.delete_many(product_query)
+        return redirect("/admin-page/")

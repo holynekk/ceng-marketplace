@@ -20,3 +20,25 @@ function addDynamicRow() {
         $("#dynamic-field-text").before(dynamicField);
     }
 }
+
+function changeProductTab(clicked_id) {
+    var descTabButton = $("#pd-desc-tab")[0];
+    var descField = $("#pd-desc")[0];
+    var contactTabButton = $("#pd-contact-tab")[0];
+    var contactField = $("#pd-contact")[0];
+    if (clicked_id === "pd-contact-tab") {
+        descTabButton.classList.remove('active');
+        contactTabButton.classList.add('active');
+
+        descField.classList.remove('active');
+        contactField.classList.add('active');
+        contactField.classList.add('show');
+    } else {
+        descTabButton.classList.add('active');
+        contactTabButton.classList.remove('active');
+
+        descField.classList.add('active');
+        descField.classList.add('show');
+        contactField.classList.remove('active');
+    }
+}
