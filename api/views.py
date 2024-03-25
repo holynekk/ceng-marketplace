@@ -12,7 +12,7 @@ def index(request, category_key=None):
     products_collection = mongodb["products"]
     categories_collection = mongodb["categories"]
     products_cursor = products_collection.find(
-        {"category": category_key} if category_key is not None and category_key != "All" else None)
+        {"category": category_key} if category_key is not None and category_key != "all" else None)
     categories_cursor = categories_collection.find().sort("name")
     products = []
     categories = []
@@ -67,7 +67,7 @@ def select_category(request):
         categories_cursor = categories_collection.find().sort("name")
         categories = []
         for category in categories_cursor:
-            if category["name"] != "All":
+            if category["key"] != "all":
                 categories.append(category)
         return render(request, "select-category.html", {"categories": categories})
 
@@ -107,6 +107,7 @@ def product_creation(request, category_name):
 
 def product_view(request, product_id):
     if request.method == 'GET':
+        users_collection = mongodb["auth_user"]
         products_collection = mongodb["products"]
         categories_collection = mongodb["categories"]
         product = products_collection.find_one({"_id": ObjectId(product_id)})
@@ -119,13 +120,18 @@ def product_view(request, product_id):
         dynamic_fields = copy.deepcopy(product)
         entries_to_remove = (
             "owner_id", "price", "category", "isActive", "updated_at", "created_at", "imageLink", "description",
-            "title",
+            "title", "key",
             "id", "_id")
         for k in entries_to_remove:
             dynamic_fields.pop(k, None)
 
+        user_data = users_collection.find_one({"id": product.get("owner_id", None)})
+        contact_data = {"Email": user_data["email"], "Full Name": user_data["first_name"] + user_data["last_name"], "Phone Number": user_data.get("phone_number", "-")}
+        print("--------------")
+        print(contact_data)
+
         return render(request, "product-detail.html",
-                      {"categories": categories, "product": product, "dynamic_fields": dynamic_fields})
+                      {"categories": categories, "product": product, "dynamic_fields": dynamic_fields, "contact_data": contact_data})
 
 
 def profile(request, user_id):
@@ -152,11 +158,7 @@ def edit_profile(request, user_id):
             categories.append(category)
         return render(request, "edit-profile.html",
                       {"categories": categories, "user_data": user_data})
-
-
-def edit_profile_post(request):
-    users_collection = mongodb["auth_user"]
-    if request.method == 'POST':
+    elif request.method == 'POST':
         form_data = request.POST
         form_data = form_data.dict()
         form_data.pop("csrfmiddlewaretoken", None)

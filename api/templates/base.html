@@ -32,6 +32,7 @@
                                     <a class="btn btn-sm btn-warning" href="/admin-page">Admin Page</a>
                                     {% endif %}
                                     <a class="btn btn-sm btn-primary" href="/product/add/category">Add Product</a>
+                                    <a class="btn btn-sm btn-secondary" href="/profile/{{ user.id }}">Profile</a>
                                     <a class="btn btn-sm btn-danger" href="/logout">Log out</a>
                                     {% endif %}
                                 </div>
@@ -60,9 +61,6 @@
                                                     </li>
                                                     {% endfor %}
                                                 </ul>
-                                            </li>
-                                            <li>
-                                                <a href="/profile/{{ user.id }}">Profile</a>
                                             </li>
                                         </ul>
                                     </div>
