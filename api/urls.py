@@ -3,7 +3,7 @@ from api import views
 
 urlpatterns = [
     re_path(r"^$", views.index, name="index"),
-    re_path(r"^category/(?P<category_name>[a-zA-Z]+)$", views.index, name="index"),
+    re_path(r"^category/(?P<category_key>[a-zA-Z]+)$", views.index, name="index"),
     re_path(r"^login/$", views.login_view, name="login"),
     re_path(r"^signup/$", views.signup, name='signup'),
     re_path(r"^logout/$", views.logout_view, name='logout'),

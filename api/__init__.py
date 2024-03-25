@@ -1,7 +1,7 @@
 import sys
 import pymongo
 
-uri = "mongodb://localhost:27017/cengMarketplace"
+uri = "mongodb+srv://holynekk:NJewUzbcrKI1ahAU@cluster0.4lqjrbr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 # Create a new client and connect to the server
 try:
     client = pymongo.MongoClient(uri)

@@ -51,12 +51,12 @@
                                                 <a href="/">Home</a>
                                             </li>
                                             <li class="has-dropdown">
-                                                <a href="/category/All">Categories<i class="fas fa-angle-down u-s-m-l-6"></i></a>
+                                                <a href="/category/all">Categories<i class="fas fa-angle-down u-s-m-l-6"></i></a>
                                                 <span class="js-menu-toggle"></span>
                                                 <ul style="width:170px">
                                                     {% for category in categories %}
                                                     <li>
-                                                        <a href="/category/{{ category.name }}">{{ category.name }}</a>
+                                                        <a href="/category/{{ category.key }}">{{ category.name }}</a>
                                                     </li>
                                                     {% endfor %}
                                                 </ul>

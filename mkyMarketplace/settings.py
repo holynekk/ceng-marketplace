@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'djongo',
         'NAME': 'cengMarketplace',
         'CLIENT': {
-            'host': "mongodb://localhost:27017/cengMarketplace"
+            'host': "mongodb+srv://holynekk:NJewUzbcrKI1ahAU@cluster0.4lqjrbr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
         }
     }
 }

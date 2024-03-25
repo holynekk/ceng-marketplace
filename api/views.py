@@ -8,22 +8,26 @@ import copy
 from api import mongodb
 
 
-def index(request, category_name=None):
+def index(request, category_key=None):
     products_collection = mongodb["products"]
     categories_collection = mongodb["categories"]
     products_cursor = products_collection.find(
-        {"category": category_name} if category_name is not None and category_name != "All" else None)
+        {"category": category_key} if category_key is not None and category_key != "All" else None)
     categories_cursor = categories_collection.find().sort("name")
     products = []
     categories = []
+    category_name = None
     for product in products_cursor:
         products.append(product)
         product["id"] = product["_id"]
     for category in categories_cursor:
+        if category["key"] == category_key:
+            category_name = category["name"]
         categories.append(category)
     number_of_products = len(products)
     return render(request, "index.html",
-                  {"categories": categories, "products": products, "number_of_products": number_of_products, "category_name": category_name})
+                  {"categories": categories, "products": products, "number_of_products": number_of_products,
+                   "category_name": category_name})
 
 
 def login_view(request):
@@ -114,8 +118,9 @@ def product_view(request, product_id):
 
         dynamic_fields = copy.deepcopy(product)
         entries_to_remove = (
-        "owner_id", "price", "category", "isActive", "updated_at", "created_at", "imageLink", "description", "title",
-        "id", "_id")
+            "owner_id", "price", "category", "isActive", "updated_at", "created_at", "imageLink", "description",
+            "title",
+            "id", "_id")
         for k in entries_to_remove:
             dynamic_fields.pop(k, None)
 
@@ -175,6 +180,7 @@ def admin_page(request, user_id=None):
             categories.append(category)
         return render(request, "admin-page.html",
                       {"categories": categories, "user_data": user_data})
+
 
 def delete_user(request, user_id):
     users_collection = mongodb["auth_user"]
