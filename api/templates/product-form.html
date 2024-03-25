@@ -19,7 +19,7 @@
                                     fields and dynamic fields that you can define specific to your product.
                                     Fields with * are required fields that you have to fill.
                                 </span>
-                                <form class="l-f-o__form" action="/product/add/" method="POST">
+                                <form class="l-f-o__form" action="/product/add/{{ category_name }}" method="POST">
                                     {% csrf_token %}
                                     <div class="u-s-m-b-30">
                                         <label class="gl-label" for="p-title">Title *</label>
@@ -40,6 +40,11 @@
                                         <label class="gl-label" for="p-imageLink">Image Link *</label>
                                         <input class="input-text input-text--primary-style" type="text" name="p-imageLink"
                                                id="p-imageLink" placeholder="Enter an Image Link" required>
+                                    </div>
+                                    <div class="u-s-m-b-30">
+                                        <label class="gl-label" for="p-isActive">Active * (If not selected, item will not be shown publicly.)</label>
+                                        <input class="input-text--primary-style" type="checkbox" name="p-isActive" checked
+                                               id="p-isActive" placeholder="Enter an Image Link" value="asdasd" />
                                     </div>
                                     {% for key, val in category_fields.items %}
                                     <div class="u-s-m-b-30">

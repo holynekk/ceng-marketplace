@@ -2,7 +2,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from bson.objectid import ObjectId
-
+from datetime import datetime
+import copy
 
 from api import mongodb
 
@@ -23,27 +24,6 @@ def index(request, category_name=None):
     number_of_products = len(products)
     return render(request, "index.html",
                   {"categories": categories, "products": products, "number_of_products": number_of_products})
-
-
-def product_view(request, product_id):
-    if request.method == 'GET':
-        products_collection = mongodb["products"]
-        categories_collection = mongodb["categories"]
-        product = products_collection.find_one({"_id": ObjectId(product_id)})
-        categories_cursor = categories_collection.find().sort("name")
-
-        categories = []
-        for category in categories_cursor:
-            categories.append(category)
-
-        dynamic_fields = product
-        dynamic_fields.pop("_id", None)
-        dynamic_fields.pop("title", None)
-        dynamic_fields.pop("description", None)
-        dynamic_fields.pop("imageLink", None)
-
-        return render(request, "product-detail.html",
-                      {"categories": categories, "product": product, "dynamic_fields": dynamic_fields})
 
 
 def login_view(request):
@@ -88,7 +68,7 @@ def select_category(request):
         return render(request, "select-category.html", {"categories": categories})
 
 
-def get_product_form(request, category_name):
+def product_creation(request, category_name):
     if request.method == 'GET':
         categories_collection = mongodb["categories"]
         category1 = categories_collection.find_one({"name": category_name})
@@ -101,10 +81,7 @@ def get_product_form(request, category_name):
             categories.append(category)
         return render(request, "product-form.html",
                       {"categories": categories, "category_name": category_name, "category_fields": category1})
-
-
-def create_product(request):
-    if request.method == 'POST':
+    elif request.method == 'POST':
         products_collection = mongodb["products"]
         product = {}
         form_data = request.POST
@@ -114,8 +91,36 @@ def create_product(request):
             v = v.strip(" ")
             if v:
                 product[k[2:]] = v
+        product["owner_id"] = request.user.id
+        product["category"] = category_name
+        product["created_at"] = datetime.now()
+        product["updated_at"] = datetime.now()
+        product["isActive"] = True if product.get("isActive", None) else False
+        print(product)
         products_collection.insert_one(product)
         return redirect("/")
+
+
+def product_view(request, product_id):
+    if request.method == 'GET':
+        products_collection = mongodb["products"]
+        categories_collection = mongodb["categories"]
+        product = products_collection.find_one({"_id": ObjectId(product_id)})
+        categories_cursor = categories_collection.find().sort("name")
+
+        categories = []
+        for category in categories_cursor:
+            categories.append(category)
+
+        dynamic_fields = copy.deepcopy(product)
+        entries_to_remove = (
+        "owner_id", "price", "category", "isActive", "updated_at", "created_at", "imageLink", "description", "title",
+        "id", "_id")
+        for k in entries_to_remove:
+            dynamic_fields.pop(k, None)
+
+        return render(request, "product-detail.html",
+                      {"categories": categories, "product": product, "dynamic_fields": dynamic_fields})
 
 
 def profile(request, user_id):
@@ -150,5 +155,5 @@ def edit_profile_post(request):
         form_data = request.POST
         form_data = form_data.dict()
         form_data.pop("csrfmiddlewaretoken", None)
-        aaaaa = users_collection.find_one_and_update({"id": request.user.id}, {"$set": form_data})
+        users_collection.find_one_and_update({"id": request.user.id}, {"$set": form_data})
         return redirect("/profile/" + str(request.user.id))

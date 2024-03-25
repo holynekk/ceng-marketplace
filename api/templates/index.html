@@ -32,10 +32,8 @@
                         <span class="product-r__name">
                             <a href="/product/{{ product.id }}">{{ product.title }}</a>
                         </span>
-                            <span class="product-r__price">
-<!--                                        <del th:if="${product.sale}" th:text="'$' + ${product.price}" style="color: lightgray"></del>-->
-<!--                                        <span th:text="'$' + ${product.sale ? product.salePrice : product.price}"></span>-->
-                                <span>{{ product.price }}</span>
+                        <span class="product-r__price">
+                            <span>${{ product.price }}</span>
                         </span>
                         </div>
                     </div>
