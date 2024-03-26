@@ -11,8 +11,10 @@ from api import mongodb
 def index(request, category_key=None):
     products_collection = mongodb["products"]
     categories_collection = mongodb["categories"]
-    products_cursor = products_collection.find(
-        {"category": category_key} if category_key is not None and category_key != "all" else None)
+    product_query = {"isActive": True}
+    if category_key is not None and category_key != "all":
+        product_query["category"] = category_key
+    products_cursor = products_collection.find(product_query)
     categories_cursor = categories_collection.find().sort("name")
     products = []
     categories = []
@@ -173,8 +175,8 @@ def edit_product(request, product_id):
                       {"categories": categories, "product": product, "category_name": category_name, "extra_fields": extra_fields})
     elif request.method == 'POST':
         form_data = request.POST.dict()
+        form_data["isActive"] = True if form_data["isActive"] == "True" else False
         form_data.pop("csrfmiddlewaretoken", None)
-        products_collection.find_one_and_update({"_id": ObjectId(product_id)}, {"$unset": {"TYsdfPE2": ""}})
         add_list = {"updated_at": datetime.now()}
         remove_list = {}
         for k, v in form_data.items():
@@ -186,11 +188,19 @@ def edit_product(request, product_id):
         products_collection.find_one_and_update({"_id": ObjectId(product_id)}, {"$set": add_list})
         products_collection.find_one_and_update({"_id": ObjectId(product_id)}, {"$unset": remove_list})
 
-        return redirect("/product/edit/" + product_id)
+        return redirect("/product/" + product_id)
 
+
+def delete_product(request, product_id):
+    products_collection = mongodb["products"]
+    if request.method == 'POST':
+        product_query = {"_id": ObjectId(product_id)}
+        products_collection.delete_many(product_query)
+        return redirect("/")
 
 
 def profile(request, user_id):
+    products_collection = mongodb["products"]
     users_collection = mongodb["auth_user"]
     if request.method == 'GET':
         user_data = users_collection.find_one({"id": int(user_id)})
@@ -199,8 +209,13 @@ def profile(request, user_id):
         categories = []
         for category in categories_cursor:
             categories.append(category)
+        products = []
+        products_cursor = products_collection.find({"owner_id": user_id})
+        for product in products_cursor:
+            product["id"] = product["_id"]
+            products.append(product)
         return render(request, "profile.html",
-                      {"categories": categories, "user_data": user_data})
+                      {"categories": categories, "user_data": user_data, "products": products, "number_of_products": len(products)})
 
 
 def edit_profile(request, user_id):

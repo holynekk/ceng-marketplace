@@ -8,9 +8,9 @@
         {% if number_of_products > 0 %}
         <div class="row" >
             {% for product in products %}
-            <div class="col-lg-3 col-md-4 col-sm-6 u-s-m-b-30" onclick="location.href='/product/{{ product.id }}';" style="cursor: pointer;">
+            <div class="col-lg-3 col-md-4 col-sm-6 u-s-m-b-30 text-center">
                 <div class="product-r u-h-100">
-                    <div class="product-r__container">
+                    <div class="product-r__container" onclick="location.href='/product/{{ product.id }}';" style="cursor: pointer;">
                         <a class="aspect aspect--bg-grey aspect--square u-d-block" href="/product/{{ product.id }}">
                             <img class="aspect__img"
                                  src="{{ product.imageLink }}"
@@ -27,20 +27,26 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="product-r__info-wrap">
-                    <span class="product-r__category">
-                        <a href="/category/{{ product.category }}">{{ product.category }}</a>
-                    </span>
+                    <div class="product-r__info-wrap text-start">
+                        <span class="product-r__category">
+                            <a href="/category/{{ product.category }}">{{ product.category }}</a>
+                        </span>
                         <div class="product-r__n-p-wrap">
-                        <span class="product-r__name">
-                            <a href="/product/{{ product.id }}">{{ product.title }}</a>
-                        </span>
-                        <span class="product-r__price">
-                            <span>${{ product.price }}</span>
-                        </span>
+                            <span class="product-r__name">
+                                <a href="/product/{{ product.id }}">{{ product.title }}</a>
+                            </span>
+                            <span class="product-r__price">
+                                <span>${{ product.price }}</span>
+                            </span>
                         </div>
                     </div>
                 </div>
+                {% if user.is_staff %}
+                <form class="u-s-m-t-6" action="/product/delete/{{ product.id }}" method="POST">
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                </form>
+                {% endif %}
             </div>
             {% endfor %}
         </div>
