@@ -175,7 +175,7 @@ def edit_product(request, product_id):
                       {"categories": categories, "product": product, "category_name": category_name, "extra_fields": extra_fields})
     elif request.method == 'POST':
         form_data = request.POST.dict()
-        form_data["isActive"] = True if form_data["isActive"] == "True" else False
+        form_data["p-isActive"] = True if "p-isActive" in form_data else False
         form_data.pop("csrfmiddlewaretoken", None)
         add_list = {"updated_at": datetime.now()}
         remove_list = {}
@@ -210,7 +210,10 @@ def profile(request, user_id):
         for category in categories_cursor:
             categories.append(category)
         products = []
-        products_cursor = products_collection.find({"owner_id": user_id})
+        products_query = {"owner_id": user_id}
+        if user_id != request.user.id:
+            products_query["isActive"] = True
+        products_cursor = products_collection.find(products_query)
         for product in products_cursor:
             product["id"] = product["_id"]
             products.append(product)
@@ -264,3 +267,13 @@ def delete_user(request, user_id):
         users_collection.delete_one(user_query)
         products_collection.delete_many(product_query)
         return redirect("/admin-page/")
+
+def change_active_state(request, action_name, product_id):
+    products_collection = mongodb["products"]
+    if request.method == 'POST':
+        active_state = True if action_name == "activate" else False
+        change_list = {"updated_at": datetime.now(), "isActive": active_state}
+        product = products_collection.find_one_and_update({"_id": ObjectId(product_id)}, {"$set": change_list})
+        return redirect("/profile/" + str(product["owner_id"]))
+
+

@@ -54,21 +54,18 @@
             </div>
         </div>
     </div>
-
     <div class="container">
-        <h2>{{ user_data.first_name }}' Products</h2>
+        <h2>{{ user_data.first_name }} {{ user_data.last_name }}'s Products</h2>
         {% if number_of_products > 0 %}
         <div class="row" >
             {% for product in products %}
             <div class="col-lg-3 col-md-4 col-sm-6 u-s-m-b-30 text-center">
                 <div class="product-r u-h-100">
                     <div class="product-r__container" onclick="location.href='/product/{{ product.id }}';" style="cursor: pointer;">
-                        <a class="aspect aspect--bg-grey aspect--square u-d-block" href="/product/{{ product.id }}">
-                            <img class="aspect__img"
-                                 src="{{ product.imageLink }}"
-                                 alt="product placeholder"
-                            >
-                        </a>
+                        <img class="aspect__img"
+                             src="{{ product.imageLink }}"
+                             alt="product placeholder"
+                        >
                         <div class="product-r__action-wrap">
                             <ul class="product-r__action-list">
                                 <li>
@@ -93,11 +90,32 @@
                         </div>
                     </div>
                 </div>
-                {% if user.is_staff %}
-                <form class="u-s-m-t-6" action="/product/delete/{{ product.id }}" method="POST">
-                    {% csrf_token %}
-                    <button class="btn btn-sm btn-danger" type="submit">Delete</button>
-                </form>
+                {% if user.is_staff or request.user.id == user_data.id %}
+                <div class="container">
+                    <div class="row justify-content-md-center">
+                        {% if product.isActive %}
+                        <div class="col">
+                            <form class="u-s-m-t-6" action="/product/change-active-state/deactivate/{{ product.id }}" method="POST">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-outline-secondary" style="width: 90px;" type="submit">Deactivate</button>
+                            </form>
+                        </div>
+                        {% else %}
+                        <div class="col">
+                            <form class="u-s-m-t-6" action="/product/change-active-state/activate/{{ product.id }}" method="POST">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-secondary" style="width: 90px;" type="submit">Activate</button>
+                            </form>
+                        </div>
+                        {% endif %}
+                        <div class="col">
+                            <form class="u-s-m-t-6" action="/product/delete/{{ product.id }}" method="POST">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 {% endif %}
             </div>
             {% endfor %}
@@ -106,11 +124,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="alert alert-warning" role="alert">
-                    {% if category_name %}
-                    There are no recent products for {{ category_name }} category!
-                    {% else %}
-                    There are no recent products!
-                    {% endif %}
+                    This user has no (active) products listed!
                 </div>
             </div>
         </div>

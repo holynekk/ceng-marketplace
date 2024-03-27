@@ -11,12 +11,10 @@
             <div class="col-lg-3 col-md-4 col-sm-6 u-s-m-b-30 text-center">
                 <div class="product-r u-h-100">
                     <div class="product-r__container" onclick="location.href='/product/{{ product.id }}';" style="cursor: pointer;">
-                        <a class="aspect aspect--bg-grey aspect--square u-d-block" href="/product/{{ product.id }}">
-                            <img class="aspect__img"
-                                 src="{{ product.imageLink }}"
-                                 alt="product placeholder"
-                            >
-                        </a>
+                        <img class="aspect__img"
+                             src="{{ product.imageLink }}"
+                             alt="product placeholder"
+                        >
                         <div class="product-r__action-wrap">
                             <ul class="product-r__action-list">
                                 <li>

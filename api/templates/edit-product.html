@@ -41,8 +41,8 @@
                                     </div>
                                     <div class="u-s-m-b-30">
                                         <label class="gl-label" for="p-isActive">Active * (If not selected, item will not be shown publicly.)</label>
-                                        <input class="input-text--primary-style" type="checkbox" name="p-isActive" checked
-                                               id="p-isActive" placeholder="Enter an Image Link" value="{{ product.isActive }}" />
+                                        <input class="input-text--primary-style" type="checkbox" name="p-isActive"{% if product.isActive == True %} checked {% endif %}
+                                               id="p-isActive"/>
                                     </div>
                                     {% for key, val in extra_fields.items %}
                                     <div class="u-s-m-b-30">
