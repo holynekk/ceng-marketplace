@@ -16,5 +16,7 @@ urlpatterns = [
     path("profile/edit/<int:user_id>", views.edit_profile, name='edit_profile'),
     path("admin-page/", views.admin_page, name='admin_page'),
     path("delete-user/<int:user_id>", views.delete_user, name='delete_user'),
-    path("product/change-active-state/<str:action_name>/<str:product_id>", views.change_active_state, name='change-active-state'),
+    path("product/change-active-state/<str:action_name>/<str:product_id>", views.change_active_state, name='change_active_state'),
+    path("product/favorite/<str:product_id>", views.favorite_product, name='favorite_product'),
+    path("favorites/", views.favorites, name='favorites'),
 ]

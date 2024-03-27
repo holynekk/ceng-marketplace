@@ -116,8 +116,11 @@ def product_view(request, product_id):
         users_collection = mongodb["auth_user"]
         products_collection = mongodb["products"]
         categories_collection = mongodb["categories"]
+        favorites_collection = mongodb["favorites"]
         product = products_collection.find_one({"_id": ObjectId(product_id)})
         categories_cursor = categories_collection.find().sort("name")
+
+        is_favorite = favorites_collection.find_one({"user_id": request.user.id, "product_id": product_id}) is not None
 
         categories = []
         for category in categories_cursor:
@@ -137,7 +140,7 @@ def product_view(request, product_id):
         product["id"] = product["_id"]
         return render(request, "product-detail.html",
                       {"categories": categories, "product": product, "dynamic_fields": dynamic_fields,
-                       "contact_data": contact_data})
+                       "contact_data": contact_data, "is_favorite": is_favorite})
 
 
 def edit_product(request, product_id):
@@ -172,7 +175,8 @@ def edit_product(request, product_id):
                 extra_fields[k] = {"type": v, "value": product.get(k, "")}
         product["id"] = product["_id"]
         return render(request, "edit-product.html",
-                      {"categories": categories, "product": product, "category_name": category_name, "extra_fields": extra_fields})
+                      {"categories": categories, "product": product, "category_name": category_name,
+                       "extra_fields": extra_fields})
     elif request.method == 'POST':
         form_data = request.POST.dict()
         form_data["p-isActive"] = True if "p-isActive" in form_data else False
@@ -218,7 +222,8 @@ def profile(request, user_id):
             product["id"] = product["_id"]
             products.append(product)
         return render(request, "profile.html",
-                      {"categories": categories, "user_data": user_data, "products": products, "number_of_products": len(products)})
+                      {"categories": categories, "user_data": user_data, "products": products,
+                       "number_of_products": len(products)})
 
 
 def edit_profile(request, user_id):
@@ -268,6 +273,7 @@ def delete_user(request, user_id):
         products_collection.delete_many(product_query)
         return redirect("/admin-page/")
 
+
 def change_active_state(request, action_name, product_id):
     products_collection = mongodb["products"]
     if request.method == 'POST':
@@ -277,3 +283,45 @@ def change_active_state(request, action_name, product_id):
         return redirect("/profile/" + str(product["owner_id"]))
 
 
+def favorite_product(request, product_id):
+    favorites_collection = mongodb["favorites"]
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return redirect("/login")
+        form_data = request.POST
+        favorite_query = {"user_id": request.user.id, "product_id": product_id}
+        if form_data["favorite_action"] == "add":
+            favorites_collection.insert_one(favorite_query)
+        else:
+            favorites_collection.delete_one(favorite_query)
+        return redirect("/product/" + product_id)
+
+
+def favorites(request):
+    favorites_collection = mongodb["favorites"]
+    products_collection = mongodb["products"]
+    categories_collection = mongodb["categories"]
+    if request.method == 'GET':
+        if not request.user.is_authenticated:
+            return redirect("/login")
+        categories = []
+        categories_cursor = categories_collection.find().sort("name")
+        for category in categories_cursor:
+            categories.append(category)
+
+        favorites = []
+        favorite_query = {"user_id": request.user.id}
+        favorites_cursor = favorites_collection.find(favorite_query)
+        for favorite in favorites_cursor:
+            favorites.append(ObjectId(favorite["product_id"]))
+
+        products = []
+        products_query = {"isActive": True, "_id": {"$in": favorites}}
+        products_cursor = products_collection.find(products_query)
+        for product in products_cursor:
+            product["id"] = product["_id"]
+            products.append(product)
+
+        number_of_products = len(products)
+        return render(request, "favorites.html",
+                      {"categories": categories, "products": products, "number_of_products": number_of_products})

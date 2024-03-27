@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block app %}
+<div class="section__content">
+    <div class="container">
+        <div class="u-s-m-b-15">
+            <h2>Favorites</h2>
+        </div>
+        {% if number_of_products > 0 %}
+        <div class="row" >
+            {% for product in products %}
+            <div class="col-lg-3 col-md-4 col-sm-6 u-s-m-b-30 text-center">
+                <div class="product-r u-h-100">
+                    <div class="product-r__container" onclick="location.href='/product/{{ product.id }}';" style="cursor: pointer;">
+                        <img class="aspect__img"
+                             src="{{ product.imageLink }}"
+                             alt="product placeholder"
+                        >
+                        <div class="product-r__action-wrap">
+                            <ul class="product-r__action-list">
+                                <li>
+                                    <a href="/product/{{ product.id }}">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="product-r__info-wrap text-start">
+                        <span class="product-r__category">
+                            <a href="/category/{{ product.category }}">{{ product.category }}</a>
+                        </span>
+                        <div class="product-r__n-p-wrap">
+                            <span class="product-r__name">
+                                <a href="/product/{{ product.id }}">{{ product.title }}</a>
+                            </span>
+                            <span class="product-r__price">
+                                <span>${{ product.price }}</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                {% if user.is_staff %}
+                <form class="u-s-m-t-6" action="/product/delete/{{ product.id }}" method="POST">
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                </form>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-warning" role="alert">
+                    You don't have any (active) favorite products!
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

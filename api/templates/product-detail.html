@@ -38,13 +38,18 @@
                     </div>
                 </div>
                 <div class="u-s-m-b-15">
-                    <form class="pd-detail__form">
+                    <form class="pd-detail__form" action="/product/favorite/{{ product.id }}" method="POST">
+                        {% csrf_token %}
                         <div class="pd-detail-inline-2">
                             <div class="u-s-m-b-15">
                                 {% if user.is_authenticated and product.owner_id == user.id %}
                                 <a class="btn btn--e-transparent-brand-b-2" href="/product/edit/{{ product.id }}">Edit</a>
                                 {% endif %}
-                                <button class="btn btn--e-brand-b-2" type="submit">Add to Favorites</button>
+                                {% if is_favorite %}
+                                <button class="btn btn--e-brand-b-2" name="favorite_action" value="remove" type="submit">Remove from Favorites<i class="fas fa-heart"></i></button>
+                                {% else %}
+                                <button class="btn btn--e-brand-b-2" name="favorite_action" value="add" type="submit">Add to Favorites <i class="far fa-heart"></i></button>
+                                {% endif %}
                             </div>
                         </div>
                     </form>
