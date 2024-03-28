@@ -99,11 +99,15 @@ def product_creation(request, category_key="None"):
         form_data = form_data.dict()
         form_data.pop("csrfmiddlewaretoken", None)
         storage_info = {}
+        camera_info = {}
         lesson_list = []
         for k, v in form_data.items():
             v = v.strip(" ")
             if v:
-                if category_key == "computer" and "." in k:
+                if category_key == "phone" and "-Camera-" in k:
+                    key = k.split("-Camera-")[1]
+                    camera_info[key] = v
+                elif category_key == "computer" and "." in k:
                     key = k.split(".")[1]
                     storage_info[key] = v
                 elif category_key == "privateLesson" and "-Lessons-" in k:
@@ -118,6 +122,8 @@ def product_creation(request, category_key="None"):
         product["isActive"] = True if product.get("isActive", None) else False
         if storage_info:
             product["Storage"] = storage_info
+        if camera_info:
+            product["Camera Specifications"] = camera_info
         if lesson_list:
             product["Lessons"] = lesson_list
         products_collection.insert_one(product)
@@ -199,15 +205,22 @@ def edit_product(request, product_id):
         add_list = {"updated_at": datetime.now()}
         remove_list = {}
         lesson_list = []
+        camera_list = {}
         for k, v in form_data.items():
             key = k[2:]
             if v != "":
-                if "-Lessons-" in k:
+                if "-Camera." in k:
+                    camera_list[k.split("-Camera.")[1]] = v
+                elif "-Lessons-" in k:
                     lesson_list.append(v)
                 else:
                     add_list[key] = v
             else:
                 remove_list[key] = v
+        if camera_list:
+            add_list["Camera Specifications"] = camera_list
+        else:
+            remove_list["Camera Specifications"] = camera_list
         if lesson_list:
             add_list["Lessons"] = lesson_list
         else:

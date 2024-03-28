@@ -47,7 +47,17 @@
                                     {% for key, val in extra_fields.items %}
                                     <div class="u-s-m-b-30">
                                         <label class="gl-label" for="p-{{ key }}">{{ key }}</label>
-                                        {% if val.type == "dict" and product.category == "computer" %}
+                                        {% if val.type == "dict" and product.category == "phone" %}
+                                        {% for spec_key, spec_val in val.value.items %}
+                                        <label class="gl-label u-s-m-l-6" for="p-Camera.{{ spec_key }}">{{ spec_key }}</label>
+                                        <input class="input-text input-text--primary-style u-s-m-l-6" type="text" name="p-Camera.{{ spec_key }}"
+                                               id="p-Camera.{{ spec_key }}" value="{{ spec_val }}" placeholder="Enter Specification">
+                                        {% endfor %}
+                                        <div id="camera-field-div" class="container d-flex flex-row justify-content-center align-items-center">
+                                            <input id="camera-field-name" class="input-text input-text--primary-style" type="text" placeholder="Enter the Camera Field Name" />
+                                            <a id="camera-add-button" class="btn btn-secondary" style="font-size: 12px;" onclick="addCameraRow()">Add Camera Field</a>
+                                        </div>
+                                        {% elif val.type == "dict" and product.category == "computer" %}
                                         <label class="gl-label u-s-m-l-6" for="p-Storage.SSD">SSD</label>
                                         <input class="input-text input-text--primary-style u-s-m-l-6" type="text" name="p-Storage.SSD"
                                                id="p-Storage.SSD" value="{{ val.value.SSD }}" placeholder="Enter SSD Information">

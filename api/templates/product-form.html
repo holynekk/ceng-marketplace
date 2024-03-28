@@ -51,6 +51,11 @@
                                         <input class="input-text input-text--primary-style u-s-m-l-6" type="text" name="p-Lessons-1"
                                                id="p-Lessons-1" placeholder="Enter Lesson Name">
                                         <a id="lesson-add-button" class="btn btn-secondary" style="font-size: 12px;" onclick="addLessonRow()">Add Lesson Field</a>
+                                        {% elif category_key == "phone" and  key == "Camera Specifications" %}
+                                        <div id="camera-field-div" class="container d-flex flex-row justify-content-center align-items-center">
+                                            <input id="camera-field-name" class="input-text input-text--primary-style" type="text" placeholder="Enter the Camera Field Name" />
+                                            <a id="camera-add-button" class="btn btn-secondary" style="font-size: 12px;" onclick="addCameraRow()">Add Camera Field</a>
+                                        </div>
                                         {% elif category_key == "computer" and  key == "Storage" %}
                                         <label class="gl-label u-s-m-l-6" for="p-Storage.SSD">SSD</label>
                                         <input class="input-text input-text--primary-style u-s-m-l-6" type="text" name="p-Storage.SSD"
