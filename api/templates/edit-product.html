@@ -47,7 +47,14 @@
                                     {% for key, val in extra_fields.items %}
                                     <div class="u-s-m-b-30">
                                         <label class="gl-label" for="p-{{ key }}">{{ key }}</label>
-                                        {% if val.type == "number" or val.type == "text" %}
+                                        {% if val.type == "dict" and product.category == "computer" and val.type == "dict" %}
+                                        <label class="gl-label u-s-m-l-6" for="p-Storage.SSD">SSD</label>
+                                        <input class="input-text input-text--primary-style u-s-m-l-6" type="text" name="p-Storage.SSD"
+                                               id="p-Storage.SSD" value="{{ val.value.SSD }}" placeholder="Enter SSD Information">
+                                        <label class="gl-label u-s-m-l-6" for="p-Storage.HDD">HDD</label>
+                                        <input class="input-text input-text--primary-style u-s-m-l-6" type="text" name="p-Storage.HDD"
+                                               id="p-Storage.HDD" value="{{ val.value.HDD }}" placeholder="Enter HDD Information">
+                                        {% elif val.type == "number" or val.type == "text" %}
                                         <input class="input-text input-text--primary-style" type="{{ val.type }}" name="p-{{ key }}"
                                                id="p-{{ key }}" placeholder="Enter {{ key }}" value="{{ val.value }}">
                                         {% else %}

@@ -98,15 +98,23 @@ def product_creation(request, category_key="None"):
         form_data = request.POST
         form_data = form_data.dict()
         form_data.pop("csrfmiddlewaretoken", None)
+        storage_info = {}
         for k, v in form_data.items():
             v = v.strip(" ")
             if v:
-                product[k[2:]] = v
+                if category_key == "computer" and "." in k:
+                    key = k.split(".")[1]
+                    storage_info[key] = v
+                else:
+                    product[k[2:]] = v
+
         product["owner_id"] = request.user.id
         product["category"] = category_key
         product["created_at"] = datetime.now()
         product["updated_at"] = datetime.now()
         product["isActive"] = True if product.get("isActive", None) else False
+        if storage_info:
+            product["Storage"] = storage_info
         products_collection.insert_one(product)
         return redirect("/")
 
@@ -189,8 +197,12 @@ def edit_product(request, product_id):
                 add_list[key] = v
             else:
                 remove_list[key] = v
-        products_collection.find_one_and_update({"_id": ObjectId(product_id)}, {"$set": add_list})
-        products_collection.find_one_and_update({"_id": ObjectId(product_id)}, {"$unset": remove_list})
+        products_collection.update({"_id": ObjectId(product_id)}, {"$set": add_list})
+        products_collection.update({"_id": ObjectId(product_id)}, {"$unset": remove_list})
+        product = products_collection.find_one({"_id": ObjectId(product_id)})
+        product_storage = product.get("Storage", None)
+        if type(product_storage) == dict and not product_storage:
+            products_collection.find_one_and_update({"_id": ObjectId(product_id)}, {"$unset": {"Storage": 1}})
 
         return redirect("/product/" + product_id)
 

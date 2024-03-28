@@ -100,10 +100,17 @@
                                                 <td>{{ product.category }}</td>
                                             </tr>
                                             {% for k, v in dynamic_fields.items %}
+                                            {% if k == "Storage" and product.category == "computer" %}
+                                            <tr>
+                                                <td>{{ k }}</td>
+                                                <td> {% if v.SSD %} SSD: {{ v.SSD }} {% endif %} {% if v.HDD %} | HDD: {{ v.HDD }} {% endif %}</td>
+                                            </tr>
+                                            {% else %}
                                             <tr>
                                                 <td>{{ k }}</td>
                                                 <td>{{ v }}</td>
                                             </tr>
+                                            {% endif %}
                                             {% endfor %}
                                             <tr>
                                                 <td>Created At</td>
