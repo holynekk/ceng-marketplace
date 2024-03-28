@@ -47,13 +47,24 @@
                                     {% for key, val in extra_fields.items %}
                                     <div class="u-s-m-b-30">
                                         <label class="gl-label" for="p-{{ key }}">{{ key }}</label>
-                                        {% if val.type == "dict" and product.category == "computer" and val.type == "dict" %}
+                                        {% if val.type == "dict" and product.category == "computer" %}
                                         <label class="gl-label u-s-m-l-6" for="p-Storage.SSD">SSD</label>
                                         <input class="input-text input-text--primary-style u-s-m-l-6" type="text" name="p-Storage.SSD"
                                                id="p-Storage.SSD" value="{{ val.value.SSD }}" placeholder="Enter SSD Information">
                                         <label class="gl-label u-s-m-l-6" for="p-Storage.HDD">HDD</label>
                                         <input class="input-text input-text--primary-style u-s-m-l-6" type="text" name="p-Storage.HDD"
                                                id="p-Storage.HDD" value="{{ val.value.HDD }}" placeholder="Enter HDD Information">
+                                        {% elif val.type == "list" and product.category == "privateLesson" %}
+                                        {% if product.Lessons %}
+                                        {% for lesson_name in product.Lessons %}
+                                        <input class="input-text input-text--primary-style u-s-m-l-6" type="text" name="p-Lessons-{{ forloop.counter }}"
+                                               id="p-Lessons-{{ forloop.counter }}" value="{{ lesson_name }}" placeholder="Enter Lesson Name">
+                                        {% endfor %}
+                                        {% else %}
+                                        <input class="input-text input-text--primary-style u-s-m-l-6" type="text" name="p-Lessons-1"
+                                               id="p-Lessons-1" value="{{ lesson_name }}" placeholder="Enter Lesson Name">
+                                        {% endif %}
+                                        <a id="lesson-add-button" class="btn btn-secondary" style="font-size: 12px;" onclick="addLessonRow()">Add Lesson Field</a>
                                         {% elif val.type == "number" or val.type == "text" %}
                                         <input class="input-text input-text--primary-style" type="{{ val.type }}" name="p-{{ key }}"
                                                id="p-{{ key }}" placeholder="Enter {{ key }}" value="{{ val.value }}">

@@ -105,6 +105,11 @@
                                                 <td>{{ k }}</td>
                                                 <td> {% if v.SSD %} SSD: {{ v.SSD }} {% endif %} {% if v.HDD %} | HDD: {{ v.HDD }} {% endif %}</td>
                                             </tr>
+                                            {% elif k == "Lessons" and product.category == "privateLesson" %}
+                                            <tr>
+                                                <td>{{ k }}</td>
+                                                <td> {% for lesson_name in v %} {{ lesson_name }}, {% endfor %}</td>
+                                            </tr>
                                             {% else %}
                                             <tr>
                                                 <td>{{ k }}</td>

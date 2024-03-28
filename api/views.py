@@ -99,12 +99,15 @@ def product_creation(request, category_key="None"):
         form_data = form_data.dict()
         form_data.pop("csrfmiddlewaretoken", None)
         storage_info = {}
+        lesson_list = []
         for k, v in form_data.items():
             v = v.strip(" ")
             if v:
                 if category_key == "computer" and "." in k:
                     key = k.split(".")[1]
                     storage_info[key] = v
+                elif category_key == "privateLesson" and "-Lessons-" in k:
+                    lesson_list.append(v)
                 else:
                     product[k[2:]] = v
 
@@ -115,6 +118,8 @@ def product_creation(request, category_key="None"):
         product["isActive"] = True if product.get("isActive", None) else False
         if storage_info:
             product["Storage"] = storage_info
+        if lesson_list:
+            product["Lessons"] = lesson_list
         products_collection.insert_one(product)
         return redirect("/")
 
@@ -165,7 +170,7 @@ def edit_product(request, product_id):
         category.pop("_id", None)
         category.pop("name", None)
         category.pop("description", None)
-        category.pop("key", None)
+        category_key = category.pop("key", None)
 
         extra_fields = {}
         for k, v in category.items():
@@ -182,6 +187,8 @@ def edit_product(request, product_id):
             if k not in extra_fields:
                 extra_fields[k] = {"type": v, "value": product.get(k, "")}
         product["id"] = product["_id"]
+        if category_key == "privateLesson":
+            product["Lessons"] = product.get("Lessons", [])
         return render(request, "edit-product.html",
                       {"categories": categories, "product": product, "category_name": category_name,
                        "extra_fields": extra_fields})
@@ -191,12 +198,20 @@ def edit_product(request, product_id):
         form_data.pop("csrfmiddlewaretoken", None)
         add_list = {"updated_at": datetime.now()}
         remove_list = {}
+        lesson_list = []
         for k, v in form_data.items():
             key = k[2:]
             if v != "":
-                add_list[key] = v
+                if "-Lessons-" in k:
+                    lesson_list.append(v)
+                else:
+                    add_list[key] = v
             else:
                 remove_list[key] = v
+        if lesson_list:
+            add_list["Lessons"] = lesson_list
+        else:
+            remove_list["Lessons"] = lesson_list
         products_collection.update({"_id": ObjectId(product_id)}, {"$set": add_list})
         products_collection.update({"_id": ObjectId(product_id)}, {"$unset": remove_list})
         product = products_collection.find_one({"_id": ObjectId(product_id)})

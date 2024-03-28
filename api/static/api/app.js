@@ -22,6 +22,20 @@ function addDynamicRow() {
     }
 }
 
+function addLessonRow() {
+    var lessonAddButton = $("#lesson-add-button")[0];
+    var id = 0;
+    while (true) {
+        id++;
+        var lastLesson = $("#p-Lessons-" + id);
+        if (lastLesson.length === 0) {
+            break
+        }
+    }
+    var newLessonRow = $(`<input class="input-text input-text--primary-style u-s-m-l-6" type="text" name="p-Lessons-` + id + `" id="p-Lessons-` + id + `" placeholder="Enter Lesson Name"/>`);
+    lessonAddButton.before(newLessonRow[0]);
+}
+
 function changeProductTab(clicked_id) {
     var descTabButton = $("#pd-desc-tab")[0];
     var descField = $("#pd-desc")[0];
