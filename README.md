@@ -4,13 +4,14 @@
 
 *URL of Render Deployment:* https://mky-marketplace.onrender.com/
 
-*User credentials:*
+*-- User credentials --*
 
-*Admin:* [ email: mrtkn19@outlook.com password: mert2345 ]
+*Admin:* [ email: mrtkn19@outlook.com | password: mert2345 ]
 
-*A Regular User:*" [ email: e2381093@ceng.metu.edu.tr password: mert2345 ]
+*A Regular User:*" [ email: e2381093@ceng.metu.edu.tr | password: mert2345 ]
 
-This project is created specifically for CENG495 | HW-I. Main purpose of the project is to have a grasp on NoSQL (MongoDB) and features related to it.
+This project is created specifically for CENG495 | HW-I. Main purpose of the project is to have a grasp on NoSQL (MongoDB)
+and features related to it. You can find relevant information below.
 
 ## SETUP (If you want to run the project locally)
 
@@ -129,6 +130,6 @@ Admins can also delete or activate/deactivate users item by using the buttons at
 
 ![admin_del](./misc/admin_del.png)
 
-I would also like to implement Email functionality (4 pts) part, but as I said, my email provider application in django does not work.
+I would also like to implement Email functionality (4 pts) part, but as I said, my email provider application in django did not work.
 It is also simple to send an email for that. Whenever there is an update, I should just check the previous price and the updated one to
 decide if an email should be sent or not (favorites collection should be used here to get all users' ids).
