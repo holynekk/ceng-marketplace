@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from bson.objectid import ObjectId
 from datetime import datetime
+import pymongo
 import copy
 
 from api import mongodb
@@ -14,7 +15,7 @@ def index(request, category_key=None):
     product_query = {"isActive": True}
     if category_key is not None and category_key != "all":
         product_query["category"] = category_key
-    products_cursor = products_collection.find(product_query)
+    products_cursor = products_collection.find(product_query).sort("updated_at", pymongo.DESCENDING)
     categories_cursor = categories_collection.find().sort("name")
     products = []
     categories = []
@@ -200,6 +201,7 @@ def edit_product(request, product_id):
                        "extra_fields": extra_fields})
     elif request.method == 'POST':
         form_data = request.POST.dict()
+        print(form_data)
         form_data["p-isActive"] = True if "p-isActive" in form_data else False
         form_data.pop("csrfmiddlewaretoken", None)
         add_list = {"updated_at": datetime.now()}
@@ -209,8 +211,8 @@ def edit_product(request, product_id):
         for k, v in form_data.items():
             key = k[2:]
             if v != "":
-                if "-Camera." in k:
-                    camera_list[k.split("-Camera.")[1]] = v
+                if "-Camera-" in k:
+                    camera_list[k.split("-Camera-")[1]] = v
                 elif "-Lessons-" in k:
                     lesson_list.append(v)
                 else:
@@ -237,9 +239,12 @@ def edit_product(request, product_id):
 
 def delete_product(request, product_id):
     products_collection = mongodb["products"]
+    favorites_collection = mongodb["favorites"]
     if request.method == 'POST':
         product_query = {"_id": ObjectId(product_id)}
         products_collection.delete_many(product_query)
+        favorites_query = {"product_id": product_id}
+        favorites_collection.delete_many(favorites_query)
         return redirect("/")
 
 
@@ -306,11 +311,14 @@ def admin_page(request, user_id=None):
 def delete_user(request, user_id):
     users_collection = mongodb["auth_user"]
     products_collection = mongodb["products"]
+    favorites_collection = mongodb["favorites"]
     if request.method == 'POST':
         user_query = {"id": int(user_id)}
         product_query = {"owner_id": int(user_id)}
         users_collection.delete_one(user_query)
         products_collection.delete_many(product_query)
+        favorites_query = {"user_id": int(user_id)}
+        favorites_collection.delete_many(favorites_query)
         return redirect("/admin-page/")
 
 

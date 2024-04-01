@@ -50,7 +50,7 @@ function addCameraRow() {
     console.log(cCameraFieldName);
     var alreadyAdded = $(`[id='p-Camera.` + cCameraFieldName + `']`);
     if (cCameraFieldName !== "" && alreadyAdded.length === 0) {
-        var dynamicField = $(`<div class="u-s-m-b-30"><label class="gl-label" for="p-Camera.` + cCameraFieldName + `">` + cCameraFieldName + `</label><input class="input-text input-text--primary-style" type="text" name="p-Camera.` + cCameraFieldName + `"id="p-Camera.` + cCameraFieldName + `" placeholder="Enter ` + cCameraFieldName + `" /></div>`);
+        var dynamicField = $(`<div class="u-s-m-b-30"><label class="gl-label" for="p-Camera-` + cCameraFieldName + `">` + cCameraFieldName + `</label><input class="input-text input-text--primary-style" type="text" name="p-Camera-` + cCameraFieldName + `"id="p-Camera-` + cCameraFieldName + `" placeholder="Enter ` + cCameraFieldName + `" /></div>`);
         $("#camera-field-div").before(dynamicField);
         $("#camera-field-name")[0].value = "";
     }

@@ -1434,22 +1434,25 @@ font-family: "Open Sans", -apple-system, system-ui, BlinkMacSystemFont, "Segoe U
     min-width: 40px; }
 
 .dash-edit-p {
-  width: 100%; }
-  .dash-edit-p .btn, .dash-edit-p .input-text, .dash-edit-p .select-box {
-    border-radius: 6px; }
-  .dash-edit-p .input-text {
-    width: 100%; }
-  .dash-edit-p .btn {
+    width: 100%;
+}
+.dash-edit-p .btn, .dash-edit-p .input-text, .dash-edit-p .select-box {
+    border-radius: 6px;
+}
+.dash-edit-p .input-text {
+    width: 100%;
+}
+.dash-edit-p .btn {
     font-weight: 600;
-    padding: 16px 46px; }
+    padding: 16px 46px;
+}
 
 .dash__custom-link {
-  font-weight: 600;
-  display: inline-block;
-  text-align: center;
-  padding: 14px 18px;
-  font-size: 13px;
-  border-radius: 6px;
-  width: 12rem; }
-
-
+    font-weight: 600;
+    display: inline-block;
+    text-align: center;
+    padding: 14px 18px;
+    font-size: 13px;
+    border-radius: 6px;
+    width: 12rem;
+}

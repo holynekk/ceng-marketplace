@@ -49,9 +49,9 @@
                                         <label class="gl-label" for="p-{{ key }}">{{ key }}</label>
                                         {% if val.type == "dict" and product.category == "phone" %}
                                         {% for spec_key, spec_val in val.value.items %}
-                                        <label class="gl-label u-s-m-l-6" for="p-Camera.{{ spec_key }}">{{ spec_key }}</label>
-                                        <input class="input-text input-text--primary-style u-s-m-l-6" type="text" name="p-Camera.{{ spec_key }}"
-                                               id="p-Camera.{{ spec_key }}" value="{{ spec_val }}" placeholder="Enter Specification">
+                                        <label class="gl-label u-s-m-l-6" for="p-Camera-{{ spec_key }}">{{ spec_key }}</label>
+                                        <input class="input-text input-text--primary-style u-s-m-l-6" type="text" name="p-Camera-{{ spec_key }}"
+                                               id="p-Camera-{{ spec_key }}" value="{{ spec_val }}" placeholder="Enter Specification">
                                         {% endfor %}
                                         <div id="camera-field-div" class="container d-flex flex-row justify-content-center align-items-center">
                                             <input id="camera-field-name" class="input-text input-text--primary-style" type="text" placeholder="Enter the Camera Field Name" />
